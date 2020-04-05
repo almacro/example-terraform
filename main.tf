@@ -1,9 +1,15 @@
+variable "server_port" {
+    description = "The port the server will use for HTTP requests"
+    type = number
+    default = 8080
+}
+
 resource "aws_security_group" "instance" {
   name = "terraform-example-instance"
   vpc_id = "vpc-324ba04a"
   ingress {
-    from_port   = 8999
-    to_port     = 8999
+    from_port   = var.server_port
+    to_port     = var.server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -39,12 +45,10 @@ resource "aws_instance" "example" {
               cat<<SCRIPT > server.sh
               #!/bin/bash
               while true; do
-                printf 'HTTP/1.1 200 OK\n\n%s' "$(cat index.html)" | nc -l 8999
+                printf 'HTTP/1.1 200 OK\n\n%s' "$(cat index.html)" | nc -l ${var.server_port}
               done
               SCRIPT
               chmod +x server.sh
-              pwd
-              ls -F
               nohup /var/www/server.sh &
               EOF
 
