@@ -1,9 +1,3 @@
-variable "server_port" {
-    description = "The port the server will use for HTTP requests"
-    type = number
-    default = 8080
-}
-
 resource "aws_security_group" "instance" {
   name = "terraform-example-instance"
   vpc_id = "vpc-324ba04a"
