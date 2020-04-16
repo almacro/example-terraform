@@ -1,0 +1,14 @@
+# copy/rename file to 'data.tf' and 
+# replace FIXMEs with proper info
+
+data "aws_vpc" "selected" {
+  id = "vpc-FIXME"
+}
+
+data "aws_subnet_ids" "selected" {
+  vpc_id = data.aws_vpc.selected.id
+  filter {
+    name   = "tag:Name"
+    values = ["subnet-FIXME","subnet-FIXME2"]
+  }
+}
